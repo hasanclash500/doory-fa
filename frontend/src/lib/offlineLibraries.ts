@@ -3,7 +3,7 @@
  * The browser catalog services call Django; native mode MUST use these instead.
  */
 import { createBlankDocument, newId } from '@/lib/document'
-import type { BrandKit, ElementItem, ElementPack, ElementQuery, FontFamily, FontQuery, TemplateCategory, TemplateDetail, TemplateQuery, TemplateSummary, UserFontUploadInput, UserFontUploadOptions } from '@/types/api'
+import type { BrandKit, ElementItem, ElementPack, ElementQuery, FontFamily, TemplateCategory, TemplateDetail, TemplateQuery, TemplateSummary, UserFontUploadInput, UserFontUploadOptions } from '@/types/api'
 import type { UserFontsService } from '@/types/adapter'
 import { readFontInfo, cleanFamilyName, MAX_FONT_BYTES } from '@/editor/fonts/fontFile'
 

@@ -113,7 +113,6 @@ function MenuButton({ label, items, testId, icon, onOpen }: { label: string; ite
  */
 function ShareMenu({ onPresent }: { onPresent: () => void }) {
   const editor = useEditor()
-  const mode = useEditorState((s) => s.mode)
   const readOnly = useEditorState((s) => s.readOnly)
   const formats = useSyncExternalStore(exportFormats.subscribe, exportFormats.getSnapshot)
   // Re-read when the server's size presets arrive: they make the suggestion.
