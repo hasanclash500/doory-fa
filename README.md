@@ -6,9 +6,20 @@
 
 ## فایل‌های آماده‌شده
 
-نسخهٔ کامل فارسی‌سازی‌شده Doory 0.2.0 در گفت‌وگوی ChatGPT به شکل فایل `doory-fa-0.2.0-source.zip` تحویل داده شده است. قبل از اجرا باید **محتویات ZIP استخراج شوند** و فایل‌های درون پوشهٔ `doory-fa-0.2.0` در ریشهٔ این مخزن قرار بگیرند، نه خود فایل ZIP.
+نسخهٔ کامل فارسی‌سازی‌شده Doory 0.2.0 در گفت‌وگوی ChatGPT به شکل فایل `doory-fa-0.2.0-source.zip` تحویل داده شده است. **با گوشی، فایل ZIP را بدون استخراج بارگذاری کنید؛ GitHub Actions خودش آن را استخراج می‌کند.** برای انتقال دستی با کامپیوتر می‌توانید فایل را استخراج کنید.
 
-## بارگذاری کد
+## انتقال پروژه با گوشی (اندروید یا آیفون)
+
+1. فایل **`doory-fa-0.2.0-source.zip`** را از گفت‌وگوی ChatGPT دانلود کنید؛ نام آن را تغییر ندهید و استخراجش نکنید.
+2. با مرورگر Chrome یا Safari وارد GitHub شوید. اگر دکمه‌های لازم دیده نمی‌شوند، گزینهٔ **Desktop site / Request Desktop Website** را روشن کنید.
+3. به [صفحهٔ بارگذاری فایل مخزن](https://github.com/hasanclash500/doory-fa/upload/main) بروید یا از مخزن **Add file → Upload files** را انتخاب کنید.
+4. همان فایل ZIP را از بخش Downloads گوشی انتخاب کنید. در پایین صفحه **Commit directly to the main branch** و سپس **Commit changes** را بزنید.
+5. [بخش Actions مخزن](https://github.com/hasanclash500/doory-fa/actions/workflows/import-doory-fa-zip.yml) را باز کنید. گردش‌کار **Import Doory FA ZIP (mobile upload)** پس از آپلود باید خودکار اجرا شود. پس از موفقیت، فایل ZIP پاک می‌شود و هزاران فایل برنامه در مخزن ظاهر می‌شوند.
+6. اگر اجرا خودکار شروع نشد، از همان صفحهٔ Actions گزینهٔ **Run workflow** را روی شاخهٔ `main` بزنید. اگر خطای دسترسی برای `git push` دیدید، در **Settings → Actions → General → Workflow permissions** دسترسی **Read and write permissions** را فعال کنید.
+
+> **نکته:** تا قبل از موفقیت گردش‌کار Import، سورس کامل در GitHub نیست و ساخت APK انجام نمی‌شود.
+
+## روش جایگزین: بارگذاری کد با کامپیوتر
 
 **روش ساده با GitHub Desktop:**
 1. [GitHub Desktop](https://desktop.github.com/) را روی رایانه نصب کنید و به حساب خود وارد شوید.
