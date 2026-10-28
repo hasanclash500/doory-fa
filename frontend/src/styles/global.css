@@ -192,3 +192,25 @@ samp {
   --color-brand-strong: var(--ink);
 }
 
+
+/* Persian UI and accessible RTL layout. Never mirror design content. */
+:root[lang='fa'] {
+  --font-sans: 'Vazirmatn', Tahoma, 'Noto Naskh Arabic', sans-serif;
+  --font-display: 'Vazirmatn', Tahoma, 'Noto Naskh Arabic', sans-serif;
+  --font-hand: 'Vazirmatn', Tahoma, sans-serif;
+}
+:root[lang='fa'] body { direction: rtl; font-feature-settings: normal; }
+:root[lang='fa'] h1, :root[lang='fa'] h2,
+:root[lang='fa'] h3, :root[lang='fa'] h4 { letter-spacing: normal; }
+:root[lang='fa'] input:not([type='email']):not([type='password']):not([type='url']):not([type='number']),
+:root[lang='fa'] textarea { text-align: start; }
+:root[lang='fa'] input[type='email'], :root[lang='fa'] input[type='password'],
+:root[lang='fa'] input[type='url'], :root[lang='fa'] input[type='number'] {
+  direction: ltr; text-align: left;
+}
+:root[lang='fa'] [data-artboard], :root[lang='fa'] canvas,
+:root[lang='fa'] [data-no-translate] { direction: ltr; }
+:root[lang='fa'] [data-artboard] { unicode-bidi: isolate; }
+:root[lang='fa'] code, :root[lang='fa'] kbd, :root[lang='fa'] pre {
+  direction: ltr; unicode-bidi: isolate;
+}
