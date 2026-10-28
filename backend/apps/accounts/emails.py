@@ -48,7 +48,7 @@ def send_verification_email(user: User) -> None:
     token = email_verification_token_generator.make_token(user)
     _send(
         "verify_email",
-        "Verify your email address for Doory",
+        "تأیید نشانی ایمیل در دوری",
         user,
         {"action_url": _link("/verify-email", user, token)},
     )
@@ -58,7 +58,7 @@ def send_password_reset_email(user: User) -> None:
     token = password_reset_token_generator.make_token(user)
     _send(
         "reset_password",
-        "Reset your Doory password",
+        "بازیابی رمز عبور دوری",
         user,
         {"action_url": _link("/reset-password", user, token)},
     )
