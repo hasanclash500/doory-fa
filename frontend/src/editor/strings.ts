@@ -2,6 +2,7 @@
  * All user-visible English strings of the editor live here so they can be translated later without
  * touching components. Functions are used where a string needs interpolation or pluralisation.
  */
+import { localizeEditorStrings } from '@/i18n/fa'
 import { animationStrings } from './animation/strings'
 import { audioStrings } from './audio/strings'
 import { clipStrings } from './clips/strings'
@@ -11,7 +12,7 @@ import { videoStrings } from './dialogs/video/strings'
 
 const plural = (n: number, one: string, many: string): string => (n === 1 ? one : many)
 
-export const t = {
+export const t = localizeEditorStrings({
   appLabel: 'Design editor',
   untitled: 'Untitled design',
   /** A part of the editor that is downloaded when it is first used (see `ui/loadable.tsx`). */
@@ -1560,4 +1561,4 @@ export const t = {
   animation: animationStrings,
   audio: audioStrings,
   clips: clipStrings,
-} as const
+} as const)
