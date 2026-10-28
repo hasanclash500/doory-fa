@@ -1,0 +1,23 @@
+# Optional HTTPS layer. Run alongside docker-compose.yml.
+services:
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      - web
+    environment:
+      DOORY_DOMAIN: ${DOORY_DOMAIN:?Set DOORY_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/online/Caddyfile:/etc/caddy/Caddyfile:ro
+      - doory_caddy_data:/data
+      - doory_caddy_config:/config
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  doory_caddy_data:
+  doory_caddy_config:
