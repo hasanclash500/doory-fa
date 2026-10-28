@@ -1,72 +1,33 @@
 # دوری فارسی | Doory FA
 
-نسخهٔ فارسی و راست‌به‌چپ پروژهٔ متن‌باز [Doory](https://github.com/shaongitbd/doory).
+نسخهٔ فارسیِ پروژهٔ متن‌باز [Doory](https://github.com/shaongitbd/doory) برای وب و اندروید.
 
-> **وضعیت مخزن:** کد اصلی Doory v0.2.0 وارد شده است. فایل‌های فارسی‌سازی‌شده و تنظیمات اندروید جداگانه اضافه می‌شوند؛ این نسخه هنوز اپلیکیشن فارسی آمادهٔ استفاده نیست.
+**وضعیت:** کد اصلی نسخهٔ **v0.2.0** دریافت شده است. واژه‌نامهٔ **۱۹۰۴ عبارت فارسی**، چیدمان راست‌به‌چپ، پیام‌های فارسی حساب کاربری و تنظیمات ساخت APK اندروید در مخزن قرار دارند. همچنان بازبینی بصری و آزمون واقعی همهٔ بخش‌ها لازم است.
 
-## فایل‌های آماده‌شده
+## 📱 دانلود APK آزمایشی
 
-نسخهٔ کامل فارسی‌سازی‌شده Doory 0.2.0 در گفت‌وگوی ChatGPT به شکل فایل `doory-fa-0.2.0-source.zip` تحویل داده شده است. **با گوشی، فایل ZIP را بدون استخراج بارگذاری کنید؛ GitHub Actions خودش آن را استخراج می‌کند.** برای انتقال دستی با کامپیوتر می‌توانید فایل را استخراج کنید.
+وارد [بخش ساخت اندروید](https://github.com/hasanclash500/doory-fa/actions/workflows/android-apk-fa.yml) شوید؛ آخرین اجرای موفق را باز کنید و از **Artifacts** بستهٔ `doory-fa-debug-apk` را دریافت کنید. پس از استخراج ZIP، فایل `app-debug.apk` را روی گوشی نصب کنید.
 
-## انتقال پروژه با گوشی (اندروید یا آیفون)
+> APK فعلی نسخهٔ آزمایشی است، نه انتشار امضاشدهٔ فروشگاهی. ممکن است برای نصب نیاز باشد اجازهٔ نصب از این منبع را در اندروید فعال کنید.
 
-1. فایل **`doory-fa-0.2.0-source.zip`** را از گفت‌وگوی ChatGPT دانلود کنید؛ نام آن را تغییر ندهید و استخراجش نکنید.
-2. با مرورگر Chrome یا Safari وارد GitHub شوید. اگر دکمه‌های لازم دیده نمی‌شوند، گزینهٔ **Desktop site / Request Desktop Website** را روشن کنید.
-3. به [صفحهٔ بارگذاری فایل مخزن](https://github.com/hasanclash500/doory-fa/upload/main) بروید یا از مخزن **Add file → Upload files** را انتخاب کنید.
-4. همان فایل ZIP را از بخش Downloads گوشی انتخاب کنید. در پایین صفحه **Commit directly to the main branch** و سپس **Commit changes** را بزنید.
-5. [بخش Actions مخزن](https://github.com/hasanclash500/doory-fa/actions/workflows/import-doory-fa-zip.yml) را باز کنید. گردش‌کار **Import Doory FA ZIP (mobile upload)** پس از آپلود باید خودکار اجرا شود. پس از موفقیت، فایل ZIP پاک می‌شود و هزاران فایل برنامه در مخزن ظاهر می‌شوند.
-6. اگر اجرا خودکار شروع نشد، از همان صفحهٔ Actions گزینهٔ **Run workflow** را روی شاخهٔ `main` بزنید. اگر خطای دسترسی برای `git push` دیدید، در **Settings → Actions → General → Workflow permissions** دسترسی **Read and write permissions** را فعال کنید.
+## کار با سرور و قابلیت‌ها
 
-> **نکته:** تا قبل از موفقیت گردش‌کار Import، سورس کامل در GitHub نیست و ساخت APK انجام نمی‌شود.
+بستهٔ اندروید به‌صورت پیش‌فرض صفحات React را درون برنامه نگه می‌دارد، اما **سرور Django را شامل نمی‌شود**. برای ورود به حساب، ذخیرهٔ ابری، اشتراک‌گذاری و قابلیت‌های وابسته به API باید بک‌اند Doory را روی HTTPS استقرار دهید.
 
-## روش جایگزین: بارگذاری کد با کامپیوتر
+برای نسخهٔ متصل به سرور، متغیر `DOORY_APP_URL` را در بخش **Settings → Secrets and variables → Actions → Variables** مخزن روی نشانی HTTPS استقرار فارسی خود قرار دهید و گردش‌کار APK را دوباره اجرا کنید. اگر این نشانی تنظیم نشود، APK به‌صورت محلی بسته‌بندی می‌شود.
 
-**روش ساده با GitHub Desktop:**
-1. [GitHub Desktop](https://desktop.github.com/) را روی رایانه نصب کنید و به حساب خود وارد شوید.
-2. از `File → Clone repository` مخزن `hasanclash500/doory-fa` را روی رایانه کپی کنید.
-3. فایل `doory-fa-0.2.0-source.zip` را استخراج کنید. **تمام محتویات داخل پوشهٔ `doory-fa-0.2.0`** (نه خود پوشهٔ اضافی و نه فایل ZIP) را به پوشهٔ مخزن کلون‌شده کپی کنید. به پرسش جایگزینی `README.md` و گردش‌کار اندروید، پاسخ «جایگزین» بدهید.
-4. در GitHub Desktop یک پیام مانند `Add Persian Doory source` بنویسید، روی `Commit to main` و سپس `Push origin` بزنید.
+## توسعه و ترجمه
 
-**روش خط فرمان** (از پوشه‌ای که فایل ZIP را در آن دارید):
+- واژه‌نامه: `frontend/src/i18n/fa-dictionary.ts`
+- منطق ترجمه و جلوگیری از تغییر متن طرح‌ها: `frontend/src/i18n/fa.ts`
+- تنظیمات راست‌به‌چپ: `frontend/src/styles/global.css`
+- تنظیمات موبایل: `frontend/capacitor.config.ts`
+- فارسی‌سازی پیام‌های ایمیل: `backend/apps/accounts/templates/accounts/email/`
+- راهنمای کامل‌تر: [README_FA.md](README_FA.md)
+- کد و راهنمای انگلیسی نسخهٔ سازنده: [README_UPSTREAM.md](README_UPSTREAM.md)
 
-```bash
-git clone https://github.com/hasanclash500/doory-fa.git
-unzip doory-fa-0.2.0-source.zip
-cp -a doory-fa-0.2.0/. doory-fa/
-cd doory-fa
-git add .
-git commit -m "Add Doory 0.2.0 Persian RTL source"
-git push origin main
-```
+## انتساب و مجوز
 
-پیش از انتشار، فایل‌های محرمانه مثل `.env`، کلیدها و رمزها را بررسی کنید و از `git push --force` استفاده نکنید.
+**Doory — ساختهٔ Siam، خالق و نگهدارندهٔ اصلی پروژه — [github.com/shaongitbd/doory](https://github.com/shaongitbd/doory)**
 
-## اجرای وب
-
-بخش رابط کاربری React و TypeScript و بخش سرور Django است. برای اجرای کامل، سرور، پایگاه‌داده و تنظیمات محیطی لازم‌اند.
-
-```bash
-cp .env.example .env
-# DJANGO_SECRET_KEY و POSTGRES_PASSWORD را با مقدارهای امن تنظیم کنید
-docker compose up -d --build
-```
-
-## ساخت برنامهٔ اندروید
-
-این پروژه از Capacitor استفاده می‌کند. نسخهٔ اندروید، وب‌اپ را روی دامنهٔ HTTPS شما نمایش می‌دهد و **سرور Django را در گوشی اجرا نمی‌کند**.
-
-1. ابتدا برنامه را روی دامنهٔ HTTPS اجرا و آزمایش کنید.
-2. در GitHub به `Settings → Secrets and variables → Actions → Variables` بروید.
-3. متغیر `DOORY_APP_URL` را برابر نشانی HTTPS واقعی سایت قرار دهید.
-4. از بخش `Actions` گردش‌کار «ساخت APK آزمایشی دوری فارسی» را اجرا کنید.
-5. اگر مراحل موفق شد، APK آزمایشی را از بخش `Artifacts` دریافت کنید.
-
-این APK آزمایشی است و برای انتشار عمومی، امضای برنامه و آزمایش کامل نیاز است.
-
-## مجوز و انتساب
-
-حقوق Doory متعلق به Siam و مشارکت‌کنندگان است. هنگام بارگذاری کد، فایل‌های اصلی `LICENSE`، `NOTICE` و `AUTHORS.md` را بدون حذف کردن نگه دارید. مجوز مستلزم نمایش برجستهٔ انتساب سازنده هنگام اجرای برنامه است:
-
-**Siam — Creator and maintainer of Doory — https://github.com/shaongitbd/doory**
-
-این مخزن وابسته یا مورد تأیید سازندهٔ اصلی نیست.
+این نسخه وابسته به سازندهٔ اصلی نیست. شرایط مجوز و حقوق مشارکت‌کنندگان مطابق فایل‌های [LICENSE](LICENSE)، [NOTICE](NOTICE) و [AUTHORS.md](AUTHORS.md) حفظ شده‌اند.
