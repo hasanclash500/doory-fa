@@ -1,8 +1,8 @@
-{% autoescape off %}Hi {{ user.name }},
+{% autoescape off %}سلام {{ user.name }}،
 
-Welcome to Doory. Confirm your email address by opening this link:
+به دوری خوش آمدید. برای تأیید نشانی ایمیل، پیوند زیر را باز کنید:
 
 {{ action_url }}
 
-The link expires in 24 hours. If you did not create a Doory account, you can ignore this message.
+این پیوند تا ۲۴ ساعت معتبر است. اگر حساب دوری نساخته‌اید، این پیام را نادیده بگیرید.
 {% endautoescape %}
