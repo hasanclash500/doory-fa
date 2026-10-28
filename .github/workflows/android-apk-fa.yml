@@ -38,8 +38,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - name: Install Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Check runner Android SDK
+        shell: bash
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME:-unset}"
+          test -d "${ANDROID_HOME:-/usr/local/lib/android/sdk}" || {
+            echo 'Android SDK not installed on the runner.' >&2
+            exit 1
+          }
       - name: Install frontend dependencies and Capacitor
         working-directory: frontend
         run: |
