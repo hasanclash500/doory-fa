@@ -10,22 +10,25 @@
 
 ## بارگذاری کد
 
-در رایانه‌ای که `git` نصب است:
+**روش ساده با GitHub Desktop:**
+1. [GitHub Desktop](https://desktop.github.com/) را روی رایانه نصب کنید و به حساب خود وارد شوید.
+2. از `File → Clone repository` مخزن `hasanclash500/doory-fa` را روی رایانه کپی کنید.
+3. فایل `doory-fa-0.2.0-source.zip` را استخراج کنید. **تمام محتویات داخل پوشهٔ `doory-fa-0.2.0`** (نه خود پوشهٔ اضافی و نه فایل ZIP) را به پوشهٔ مخزن کلون‌شده کپی کنید. به پرسش جایگزینی `README.md` و گردش‌کار اندروید، پاسخ «جایگزین» بدهید.
+4. در GitHub Desktop یک پیام مانند `Add Persian Doory source` بنویسید، روی `Commit to main` و سپس `Push origin` بزنید.
+
+**روش خط فرمان** (از پوشه‌ای که فایل ZIP را در آن دارید):
 
 ```bash
+git clone https://github.com/hasanclash500/doory-fa.git
 unzip doory-fa-0.2.0-source.zip
-cd doory-fa-0.2.0
-git init
-git remote add origin https://github.com/hasanclash500/doory-fa.git
-git fetch origin main
+cp -a doory-fa-0.2.0/. doory-fa/
+cd doory-fa
 git add .
 git commit -m "Add Doory 0.2.0 Persian RTL source"
-git branch -M main
-git pull --rebase origin main
-git push -u origin main
+git push origin main
 ```
 
-اگر `git pull --rebase` به دلیل تغییرهای مشترک در README خطا داد، ابتدا خطا را رفع کنید و سپس `git rebase --continue` را اجرا کنید. **از `git push --force` استفاده نکنید.** قبل از انتشار، فایل‌های محرمانه مثل `.env`، کلیدها و رمزها را بررسی کنید.
+پیش از انتشار، فایل‌های محرمانه مثل `.env`، کلیدها و رمزها را بررسی کنید و از `git push --force` استفاده نکنید.
 
 ## اجرای وب
 
