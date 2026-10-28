@@ -21,7 +21,7 @@ export function UploadFontDialog() {
   const uploads = useFontUploads((data, options) => editor.userFonts.upload(data, options))
   const { items, running, nameTaken } = uploads
   const [over, setOver] = useState(false)
-  const input = useRef<HTMLInputElement>(null)
+  const fileId = useId()
   const familyInput = useRef<HTMLInputElement>(null)
   const limitsId = useId()
   const familyId = useId()
@@ -69,14 +69,13 @@ export function UploadFontDialog() {
   return (
     <Dialog title={t.userFonts.dialog.title} description={t.userFonts.dialog.description} onClose={close} width={560} footer={footer}>
       <div className={styles.stack}>
-        <button
-          type="button"
+        <label
+          htmlFor={fileId}
           className={styles.zone}
           data-over={over || undefined}
           data-testid="font-drop-zone"
           aria-describedby={limitsId}
-          disabled={running || items.length >= MAX_FONT_FILES}
-          onClick={() => input.current?.click()}
+          aria-disabled={running || items.length >= MAX_FONT_FILES}
           onDragOver={(e) => {
             if (!e.dataTransfer.types.includes('Files')) return
             e.preventDefault()
@@ -94,24 +93,24 @@ export function UploadFontDialog() {
           <span>
             {t.userFonts.dialog.or} <u>{t.userFonts.dialog.choose}</u>
           </span>
-        </button>
+          <input
+            id={fileId}
+            type="file"
+            multiple
+            accept={ACCEPT}
+            className={styles.fileInput}
+            aria-label={t.userFonts.dialog.choose}
+            disabled={running || items.length >= MAX_FONT_FILES}
+            data-testid="font-file-input"
+            onChange={(e) => {
+              uploads.addFiles([...(e.target.files ?? [])])
+              e.target.value = ''
+            }}
+          />
+        </label>
         <p id={limitsId} className={styles.limits}>
           {t.userFonts.dialog.limits}
         </p>
-        <input
-          ref={input}
-          type="file"
-          multiple
-          accept={ACCEPT}
-          className={styles.fileInput}
-          tabIndex={-1}
-          aria-hidden="true"
-          data-testid="font-file-input"
-          onChange={(e) => {
-            uploads.addFiles([...(e.target.files ?? [])])
-            e.target.value = ''
-          }}
-        />
 
         {uploads.notice ? (
           <p className={styles.notice} role="status">

@@ -18,6 +18,9 @@ on:
       - 'frontend/src/editor/builtins/panels.tsx'
       - 'frontend/src/editor/builtins/commands.tsx'
       - 'frontend/src/editor/fonts/useFontUploadEntry.ts'
+      - 'frontend/src/editor/fonts/UploadFontDialog.tsx'
+      - 'frontend/src/editor/fonts/UploadFontDialog.module.css'
+      - 'frontend/src/editor/fonts/useFontUploadEntry.test.tsx'
       - 'frontend/src/lib/offlineLibraries.ts'
       - 'frontend/src/lib/mobileOnline.ts'
       - 'frontend/src/main.tsx'
@@ -67,6 +70,9 @@ jobs:
           # npm install also reconciles the existing lockfile with new Capacitor dependencies.
           npm install --no-audit --no-fund
           test -d node_modules/@capacitor/browser
+      - name: Test guest font upload dialog
+        working-directory: frontend
+        run: npx vitest run src/editor/fonts/useFontUploadEntry.test.tsx
       - name: Build Persian frontend
         working-directory: frontend
         run: npm run build
