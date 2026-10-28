@@ -1,0 +1,86 @@
+name: Clone original Doory v0.2.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/clone-doory-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-original-doory
+  cancel-in-progress: false
+
+jobs:
+  clone-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out your repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Do not overwrite an existing codebase
+        id: check
+        shell: bash
+        run: |
+          if [[ -f frontend/package.json && -d backend ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Project source is already present. No changes made."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Clone original Doory release
+        if: steps.check.outputs.skip == 'false'
+        shell: bash
+        run: |
+          git clone --depth 1 --branch v0.2.0 \
+            https://github.com/shaongitbd/doory.git \
+            "$RUNNER_TEMP/original-doory"
+          test -f "$RUNNER_TEMP/original-doory/LICENSE"
+          test -f "$RUNNER_TEMP/original-doory/frontend/package.json"
+          test -d "$RUNNER_TEMP/original-doory/backend"
+          git -C "$RUNNER_TEMP/original-doory" rev-parse HEAD > "$RUNNER_TEMP/upstream-sha"
+
+      - name: Import upstream source, preserving your existing setup
+        if: steps.check.outputs.skip == 'false'
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a \
+            --exclude='/.git/' \
+            --exclude='/.github/workflows/' \
+            --exclude='/README.md' \
+            "$RUNNER_TEMP/original-doory/" ./
+          cp "$RUNNER_TEMP/original-doory/README.md" README_UPSTREAM.md
+          cat > UPSTREAM_SOURCE.md <<EOF
+          # Original Doory source
+
+          - Repository: https://github.com/shaongitbd/doory
+          - Release: v0.2.0
+          - Commit: $(cat "$RUNNER_TEMP/upstream-sha")
+
+          This is the original upstream source, not yet the Persian-localized source.
+          Please retain the original LICENSE, NOTICE, and AUTHORS.md files.
+          EOF
+          # README originally said source was not imported. Update that note.
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('README.md')
+          s = p.read_text()
+          s = s.replace('> **وضعیت مخزن:** این مخزن در حال آماده‌سازی است. کد کامل فارسی‌سازی‌شده هنوز در شاخهٔ اصلی قرار نگرفته؛ تا زمانی که فایل‌های پروژه آپلود نشده‌اند، ساخت اپلیکیشن اندروید ممکن نیست.', '> **وضعیت مخزن:** کد اصلی Doory v0.2.0 وارد شده است. فایل‌های فارسی‌سازی‌شده و تنظیمات اندروید جداگانه اضافه می‌شوند؛ این نسخه هنوز اپلیکیشن فارسی آمادهٔ استفاده نیست.')
+          p.write_text(s)
+          PY
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No files changed."
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "Import original Doory v0.2.0 source with attribution"
+          git push origin HEAD:main
