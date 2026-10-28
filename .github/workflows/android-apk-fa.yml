@@ -1,0 +1,58 @@
+name: ساخت APK آزمایشی دوری فارسی
+
+on:
+  workflow_dispatch:
+
+jobs:
+  android-debug:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - name: Verify source was uploaded
+        shell: bash
+        run: |
+          test -f frontend/package.json || {
+            echo 'Upload the extracted Doory FA source files before building the APK.' >&2
+            exit 1
+          }
+          test -f frontend/capacitor.config.ts || {
+            echo 'The Persian Capacitor configuration is missing.' >&2
+            exit 1
+          }
+      - name: Check hosted app URL
+        shell: bash
+        env:
+          DOORY_APP_URL: ${{ vars.DOORY_APP_URL }}
+        run: |
+          if [[ ! "$DOORY_APP_URL" =~ ^https:// ]]; then
+            echo 'Set DOORY_APP_URL under Settings > Secrets and variables > Actions > Variables.' >&2
+            exit 1
+          fi
+      - name: Install dependencies and build web frontend
+        working-directory: frontend
+        run: npm ci && npm run mobile:install && npm run build
+      - name: Create and sync Android project
+        working-directory: frontend
+        env:
+          DOORY_APP_URL: ${{ vars.DOORY_APP_URL }}
+        run: npx cap add android && npx cap sync android
+      - name: Build debug APK
+        working-directory: frontend/android
+        run: chmod +x gradlew && ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doory-fa-android-debug-apk
+          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
