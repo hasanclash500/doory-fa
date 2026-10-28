@@ -19,6 +19,7 @@ on:
       - 'frontend/src/editor/builtins/commands.tsx'
       - 'frontend/src/editor/fonts/useFontUploadEntry.ts'
       - 'frontend/src/lib/offlineLibraries.ts'
+      - 'frontend/src/lib/mobileOnline.ts'
       - 'frontend/src/main.tsx'
       - 'frontend/src/editor/strings.ts'
       - 'frontend/src/styles/global.css'
@@ -63,7 +64,7 @@ jobs:
         working-directory: frontend
         run: |
           npm ci
-          npm install --no-save @capacitor/core@^8 @capacitor/android@^8 @capacitor/cli@^8
+          npm install --no-save @capacitor/core@^8 @capacitor/android@^8 @capacitor/cli@^8 @capacitor/browser@^8
       - name: Build Persian frontend
         working-directory: frontend
         run: npm run build
@@ -73,6 +74,7 @@ jobs:
           test -f frontend/dist/index.html
           test -f frontend/capacitor.config.ts
           grep -q 'MobileHomePage' frontend/src/app/routes.tsx
+          grep -q 'openOnlineDoory' frontend/src/pages/MobileHomePage.tsx
       - name: Generate Android project
         working-directory: frontend
         env:
