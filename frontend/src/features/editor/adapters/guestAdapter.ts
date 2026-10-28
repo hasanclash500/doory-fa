@@ -1,4 +1,5 @@
 import { localRepository, type LocalRepository } from '@/lib/local'
+import { offlineBrand, offlineElements, offlineFonts, offlineTemplates } from '@/lib/offlineLibraries'
 import type { AccountReason, AssetRef, EditorAdapter, SaveInput } from '@/types/adapter'
 import type { Asset } from '@/types/api'
 import { MigrationError } from './errors'
@@ -102,6 +103,13 @@ export function createGuestAdapter(options: GuestAdapterOptions): EditorAdapter 
     },
     services: {
       ...createPublicServices(),
+      // Fully local catalogues. No Django connection and no account are needed.
+      fonts: {
+        list: async () => ({ count: 0, next: null, previous: null, results: [] }),
+        mine: offlineFonts,
+      },
+      elements: offlineElements,
+      templates: offlineTemplates,
       assets: {
         async list(query) {
           const needle = query.q?.toLowerCase()
@@ -113,7 +121,7 @@ export function createGuestAdapter(options: GuestAdapterOptions): EditorAdapter 
         },
         remove: (id) => repo.deleteAsset(id),
       },
-      brand: null,
+      brand: offlineBrand,
       stock: null,
       versions: null,
     },

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { safeGetItem, safeSetItem } from '@/lib/storage'
 import type { ElementItem, ElementKind, ElementPack } from '@/types/api'
 import { useEditor } from '../context'
@@ -29,6 +29,8 @@ function storedFilter(): { kind: Kind; pack: string } {
 /** Sticker library (docked sidebar): search, category menu, pack chips and an endless grid. */
 export function StickerPanel() {
   const editor = useEditor()
+  const uploadInput = useRef<HTMLInputElement>(null)
+  const [uploadError, setUploadError] = useState('')
   const [query, setQuery] = useState('')
   const [stored] = useState(storedFilter)
   const [kind, setKind] = useState<Kind>(stored.kind)
@@ -72,6 +74,20 @@ export function StickerPanel() {
   const loading = list.loading && list.items.length === 0
   return (
     <>
+      <div style={{ padding: '8px 0 14px', direction: 'rtl' }}>
+        <button type="button" className={`${ed.btn} ${ed.primary}`} style={{ width: '100%', minHeight: 44 }} onClick={() => uploadInput.current?.click()}>
+          افزودن استیکر از گوشی (PNG، JPG، SVG)
+        </button>
+        <input ref={uploadInput} type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,.svg" multiple
+          style={{ display: 'none' }} aria-label="انتخاب فایل استیکر"
+          onChange={e => {
+            const files = Array.from(e.currentTarget.files || [])
+            e.currentTarget.value = ''
+            setUploadError('')
+            if (files.length) void editor.insert.imageFiles(files).catch(() => setUploadError('فایل استیکر بارگذاری نشد. یک تصویر معتبر انتخاب کنید.'))
+          }} />
+        {uploadError && <p role="alert" style={{ color: '#b31d4c', fontSize: 13 }}>{uploadError}</p>}
+      </div>
       <LibrarySearch value={query} onChange={setQuery} placeholder={t.stickers.search} clearLabel={t.stickers.clearSearch} testId="sticker-search" />
       <CategoryMenu name={t.stickers.category} label={label} entries={entries} activeId={kind} onSelect={selectKind} testId="sticker-category" />
       {visiblePacks.length >= 2 ? (

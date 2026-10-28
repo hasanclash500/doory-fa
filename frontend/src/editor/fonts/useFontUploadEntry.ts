@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { openAccountDialog } from '../chrome/accountGate'
-import { useEditor, useEditorState } from '../context'
+import { useEditor } from '../context'
 import { t } from '../strings'
 import { useUserFonts } from './userFonts'
 
@@ -15,11 +15,10 @@ export interface FontUploadEntry {
 
 export function useFontUploadEntry(): FontUploadEntry {
   const editor = useEditor()
-  const mode = useEditorState((s) => s.mode)
   const { canManage } = useUserFonts()
-  const gated = !canManage && mode === 'guest'
+  const gated = false
   const start = useCallback(() => {
     void openAccountDialog(editor, 'brand-kit', 'upload-font', (e) => Boolean(e.adapter.services.fonts.mine), t.userFonts.errors.unavailable)
   }, [editor])
-  return { available: canManage || gated, gated, start }
+  return { available: canManage, gated, start }
 }

@@ -123,7 +123,7 @@ function ShareMenu({ onPresent }: { onPresent: () => void }) {
   const anchor = useRef<HTMLButtonElement>(null)
   // The account dialog may take a moment to load; a second pick of "Share with people" meanwhile is ignored.
   const sharing = useRef(false)
-  const canShare = !readOnly && (mode === 'guest' || !!editor.adapter.services.sharing)
+  const canShare = !readOnly && !!editor.adapter.services.sharing
 
   const quick = useCallback(
     async (choice: ExportChoice): Promise<void> => {

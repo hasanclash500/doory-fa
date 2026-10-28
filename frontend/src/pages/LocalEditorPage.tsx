@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthProvider'
 import { useAuthModal } from '@/features/auth/AuthModalProvider'
+import { isStandaloneMobile } from '@/lib/nativeMobile'
 import { createGuestAdapter, type MigrationProgress } from '@/features/editor/adapters'
 import { EditorHomeLink } from '@/features/editor/EditorHomeLink'
 import { EditorProblemPage, EditorSkeleton } from '@/features/editor/EditorStates'
@@ -62,7 +63,7 @@ export default function LocalEditorPage() {
       createGuestAdapter({
         localId,
         maxUploadBytes,
-        ensureSignedIn: (reason) => handlers.get().openAuthModal({ reason }),
+        ensureSignedIn: (reason) => isStandaloneMobile() ? Promise.resolve(false) : handlers.get().openAuthModal({ reason }),
         onMigrationStart: () => setMigration({ active: true, progress: null }),
         onMigrationProgress: (progress) => setMigration({ active: true, progress }),
         onMigrationWarning: (message) => handlers.get().toast({ title: 'Some images were left out', description: message, variant: 'warning', duration: 9000 }),
@@ -118,7 +119,7 @@ export default function LocalEditorPage() {
         onTitleChange={setTitle}
         onSaveStateChange={setSaveState}
         topBarStart={<EditorHomeLink to="/" />}
-        topBarEnd={<GuestBanner signedIn={status === 'authenticated'} memoryOnly={storageMode === 'memory'} busy={migration.active} onSave={() => void saveToAccount()} />}
+        topBarEnd={isStandaloneMobile() ? null : <GuestBanner signedIn={status === 'authenticated'} memoryOnly={storageMode === 'memory'} busy={migration.active} onSave={() => void saveToAccount()} />}
       />
       <MigrationOverlay open={migration.active} progress={migration.progress} />
     </>
