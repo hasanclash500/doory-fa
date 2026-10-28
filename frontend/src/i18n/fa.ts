@@ -78,23 +78,37 @@ function localizeSubtree(root: Node) {
 function showNativeCredit() {
   const capacitor = (window as Window & { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
   if (!capacitor?.isNativePlatform?.() || document.getElementById('doory-native-credit')) return
+
   const banner = document.createElement('aside')
   banner.id = 'doory-native-credit'
   banner.setAttribute('role', 'note')
-  banner.style.cssText = 'position:fixed;z-index:2147483647;bottom:0;inset-inline:0;background:#fffdf8;color:#2b1c17;padding:14px 16px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -4px 25px #0002;direction:rtl;font:14px/1.8 Tahoma,sans-serif;'
-  const credit = document.createElement('span')
-  credit.textContent = 'دوری (Doory) — ساختهٔ Siam، خالق و نگهدارندهٔ پروژه • '
-  const link = document.createElement('a')
-  link.href = 'https://github.com/shaongitbd/doory'
-  link.target = '_blank'
-  link.rel = 'noopener noreferrer'
-  link.textContent = 'github.com/shaongitbd/doory'
+  banner.dir = 'rtl'
+  banner.style.cssText = 'position:fixed;z-index:2147483647;bottom:0;inset-inline:0;background:#fffdf8;color:#2b1c17;padding:12px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 25px #0002;font:13px/1.9 Vazirmatn,Tahoma,sans-serif;max-height:45dvh;overflow-y:auto;text-align:right;'
+
+  const upstreamLine = document.createElement('div')
+  upstreamLine.textContent = 'دوری (Doory) — ساختهٔ Siam، خالق و نگهدارندهٔ پروژه • '
+  const upstreamLink = document.createElement('a')
+  upstreamLink.href = 'https://github.com/shaongitbd/doory'
+  upstreamLink.target = '_blank'
+  upstreamLink.rel = 'noopener noreferrer'
+  upstreamLink.textContent = 'GitHub سازنده اصلی'
+  upstreamLine.appendChild(upstreamLink)
+
+  const persianLine = document.createElement('div')
+  persianLine.textContent = 'فارسی‌سازی و توسعه نسخه اندروید: حسن عابدینی • '
+  const githubLink = document.createElement('a')
+  githubLink.href = 'https://github.com/hasanclash500'
+  githubLink.target = '_blank'
+  githubLink.rel = 'noopener noreferrer'
+  githubLink.textContent = 'GitHub حسن عابدینی'
+  persianLine.appendChild(githubLink)
+
   const close = document.createElement('button')
   close.type = 'button'
-  close.textContent = 'متوجه شدم'
-  close.style.cssText = 'display:inline-block;padding:4px 12px;margin-inline-start:14px;border-radius:6px;background:#2b1c17;color:white;cursor:pointer;'
+  close.textContent = 'ورود به برنامه'
+  close.style.cssText = 'display:inline-block;padding:6px 14px;margin-top:8px;border-radius:8px;background:#2b1c17;color:white;cursor:pointer;font:inherit;'
   close.addEventListener('click', () => banner.remove())
-  banner.append(credit, link, close)
+  banner.append(upstreamLine, persianLine, close)
   document.body.appendChild(banner)
 }
 

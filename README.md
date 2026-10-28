@@ -31,3 +31,9 @@
 **Doory — ساختهٔ Siam، خالق و نگهدارندهٔ اصلی پروژه — [github.com/shaongitbd/doory](https://github.com/shaongitbd/doory)**
 
 این نسخه وابسته به سازندهٔ اصلی نیست. شرایط مجوز و حقوق مشارکت‌کنندگان مطابق فایل‌های [LICENSE](LICENSE)، [NOTICE](NOTICE) و [AUTHORS.md](AUTHORS.md) حفظ شده‌اند.
+
+## اعتبار توسعه نسخه فارسی و اندروید
+
+**فارسی‌سازی و توسعه نسخه اندروید: حسن عابدینی** — [GitHub: @hasanclash500](https://github.com/hasanclash500)
+
+این نسخه بر پایهٔ [Doory](https://github.com/shaongitbd/doory) ساخته شده است. حقوق و انتساب سازندهٔ اصلی، **Siam**، مطابق فایل `LICENSE` محفوظ می‌ماند.

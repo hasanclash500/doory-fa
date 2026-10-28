@@ -84,6 +84,13 @@ export default function MobileHomePage() {
           </ul>
         )}
       </section>
+      <footer aria-label="درباره برنامه و توسعه‌دهندگان" style={{ marginTop: 30, padding: '18px 14px', border: '1px solid #e4def1', borderRadius: 16, background: '#faf8ff', textAlign: 'center', fontSize: 13, lineHeight: 2 }}>
+        <p style={{ color: '#28194b', fontWeight: 700 }}>فارسی‌سازی و توسعه نسخه اندروید: حسن عابدینی</p>
+        <a href="https://github.com/hasanclash500" target="_blank" rel="noopener noreferrer" dir="ltr" style={{ display: 'inline-block', fontWeight: 600, direction: 'ltr' }}>github.com/hasanclash500</a>
+        <p style={{ color: '#665879', marginTop: 8, fontSize: 12 }}>
+          بر پایهٔ پروژه متن‌باز Doory، ساختهٔ Siam — <a href="https://github.com/shaongitbd/doory" target="_blank" rel="noopener noreferrer" dir="ltr">GitHub سازنده اصلی</a>
+        </p>
+      </footer>
       <p style={{ fontSize: 12, lineHeight: 1.9, marginTop: 28, color: '#665879' }}>
         ورود به حساب، اشتراک‌گذاری آنلاین، قالب‌های سروری و ذخیره ابری در این نسخه آفلاین فعال نیستند.
         قبل از حذف برنامه، از طرح‌های مهم خروجی بگیر.
