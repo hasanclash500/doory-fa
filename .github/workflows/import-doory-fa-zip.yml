@@ -1,0 +1,72 @@
+name: Import Doory FA ZIP (mobile upload)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'doory-fa-0.2.0-source.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: doory-fa-import
+  cancel-in-progress: false
+
+jobs:
+  import-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Check and extract Doory FA archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f doory-fa-0.2.0-source.zip || {
+            echo "::error::First upload doory-fa-0.2.0-source.zip to the repository root."
+            exit 1
+          }
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from zipfile import ZipFile
+          import stat
+          archive = Path("doory-fa-0.2.0-source.zip")
+          dest = Path("/tmp/doory-fa-unpacked")
+          dest.mkdir(parents=True, exist_ok=True)
+          with ZipFile(archive) as z:
+              for item in z.infolist():
+                  p = PurePosixPath(item.filename)
+                  mode = item.external_attr >> 16
+                  if not item.filename.startswith("doory-fa-0.2.0/") or ".." in p.parts or p.is_absolute() or stat.S_ISLNK(mode):
+                      raise RuntimeError(f"Unsafe archive member: {item.filename}")
+                  if item.filename.endswith("/"):
+                      continue
+                  if item.file_size > 25_000_000:
+                      raise RuntimeError(f"Unexpectedly large file: {item.filename}")
+              z.extractall(dest)
+          for required in ("frontend/package.json", "frontend/capacitor.config.ts", "README_FA.md", "LICENSE"):
+              if not (dest / "doory-fa-0.2.0" / required).is_file():
+                  raise RuntimeError(f"Missing expected source file: {required}")
+          PY
+
+      - name: Import full source and keep mobile instructions
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a /tmp/doory-fa-unpacked/doory-fa-0.2.0/ ./
+          # Keep the tested workflow and the mobile-oriented Persian README.
+          git show HEAD:README.md > README.md
+          git show HEAD:.github/workflows/android-apk-fa.yml > .github/workflows/android-apk-fa.yml
+          rm doory-fa-0.2.0-source.zip
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No new changes to import."
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Import full Doory FA 0.2.0 source'
+          git push origin HEAD:main
