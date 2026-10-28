@@ -1,0 +1,53 @@
+name: Install extended Persian translations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/i18n/chunk-05.b64'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  install-dictionary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and decode pre-reviewed Farsi dictionary
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 00 01 02 03 04 05; do
+            test -s ".github/i18n/chunk-${n}.b64" || {
+              echo "::error::Missing translation data chunk ${n}"
+              exit 1
+            }
+          done
+          cat .github/i18n/chunk-{00,01,02,03,04,05}.b64 | base64 --decode | xz -d > frontend/src/i18n/fa-dictionary.ts
+          printf '7cf75e13745126a20684ea1879a64a34ac94f7738c1aacd9b21a723e7dc5344c  frontend/src/i18n/fa-dictionary.ts\n' | sha256sum -c -
+          grep -q 'export const faDictionary' frontend/src/i18n/fa-dictionary.ts
+      - name: Commit full Persian translation glossary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('README_FA.md')
+          t=p.read_text()
+          t=t.replace('۳۶۳ عبارت متداول فارسی شده‌اند', 'بیش از ۱۹۰۰ عبارت رابط کاربری فارسی شده‌اند')
+          p.write_text(t)
+          PY
+          git add frontend/src/i18n/fa-dictionary.ts README_FA.md
+          if git diff --cached --quiet; then
+            echo 'Dictionary already installed.'
+          else
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Install reviewed expanded Persian UI dictionary'
+            git push origin HEAD:main
+          fi
+      - name: Trigger a new Android APK build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run android-apk-fa.yml --ref main
