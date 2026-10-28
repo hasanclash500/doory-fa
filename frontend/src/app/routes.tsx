@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
-import { Navigate, type RouteObject } from 'react-router-dom'
+import { Navigate, Outlet, type RouteObject } from 'react-router-dom'
+import { isStandaloneMobile } from '@/lib/nativeMobile'
 import { RequireAuth } from '@/features/auth/RequireAuth'
 import { PageLoader } from './PageLoader'
 import { RouteErrorPage } from './RouteErrorPage'
@@ -8,6 +9,7 @@ import { MarketingLayout } from './layouts/MarketingLayout'
 import { RootLayout } from './layouts/RootLayout'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
+const MobileHomePage = lazy(() => import('@/pages/MobileHomePage'))
 const TemplatesPage = lazy(() => import('@/pages/TemplatesPage'))
 const FeaturesPage = lazy(() => import('@/pages/FeaturesPage'))
 const FaqPage = lazy(() => import('@/pages/FaqPage'))
@@ -40,9 +42,9 @@ export const routes: RouteObject[] = [
     errorElement: <RouteErrorPage />,
     children: [
       {
-        element: <MarketingLayout />,
+        element: isStandaloneMobile() ? <Outlet /> : <MarketingLayout />,
         children: [
-          { index: true, element: <LandingPage /> },
+          { index: true, element: isStandaloneMobile() ? page(<MobileHomePage />) : <LandingPage /> },
           { path: 'templates', element: <TemplatesPage /> },
           { path: 'templates/:slug', element: <TemplateDetailPage /> },
           { path: 'features', element: <FeaturesPage /> },

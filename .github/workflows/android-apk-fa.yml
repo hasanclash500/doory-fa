@@ -6,6 +6,11 @@ on:
     branches: [main]
     paths:
       - 'frontend/src/i18n/**'
+      - 'frontend/src/app/routes.tsx'
+      - 'frontend/src/app/OfflineBanner.tsx'
+      - 'frontend/src/features/auth/AuthProvider.tsx'
+      - 'frontend/src/lib/nativeMobile.ts'
+      - 'frontend/src/pages/MobileHomePage.tsx'
       - 'frontend/src/main.tsx'
       - 'frontend/src/editor/strings.ts'
       - 'frontend/src/styles/global.css'
@@ -54,10 +59,16 @@ jobs:
       - name: Build Persian frontend
         working-directory: frontend
         run: npm run build
+      - name: Verify offline standalone build
+        shell: bash
+        run: |
+          test -f frontend/dist/index.html
+          test -f frontend/capacitor.config.ts
+          grep -q 'MobileHomePage' frontend/src/app/routes.tsx
       - name: Generate Android project
         working-directory: frontend
         env:
-          DOORY_APP_URL: ${{ vars.DOORY_APP_URL }}
+          DOORY_APP_URL: ''
         run: |
           npx cap add android
           npx cap sync android

@@ -1,11 +1,12 @@
 import { WifiOff } from 'lucide-react'
 import { useOnline } from '@/lib/useOnline'
+import { isStandaloneMobile } from '@/lib/nativeMobile'
 import styles from './OfflineBanner.module.css'
 
 /** Appears while the browser reports no connection. Local (guest) designs keep saving to this browser. */
 export function OfflineBanner() {
   const online = useOnline()
-  if (online) return null
+  if (isStandaloneMobile() || online) return null
   return (
     <div className={styles.banner} role="status">
       <WifiOff size={16} aria-hidden="true" />

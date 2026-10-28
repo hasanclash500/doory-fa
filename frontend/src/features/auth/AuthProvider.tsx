@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { configureBackgroundRemoval } from '@/editor/engine/bgRemoval/install'
 import { ApiError, authApi, configApi, DEFAULT_CONFIG, isApiError, setUnauthorizedHandler } from '@/lib/api'
 import { setSizeChoicesUser } from '@/lib/sizePresets/choices'
+import { isStandaloneMobile } from '@/lib/nativeMobile'
 import type { ApiUser, AppConfig, RegisterInput } from '@/types/api'
 
 export type AuthStatus = 'loading' | 'authenticated' | 'anonymous'
@@ -67,6 +68,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
+    // Bundled mobile mode has no Django backend. Guest editing works entirely in IndexedDB.
+    // Do not report a fake internet outage or wait for /api/v1/auth/me on localhost.
+    if (isStandaloneMobile()) {
+      setConfig(DEFAULT_CONFIG)
+      configureBackgroundRemoval(DEFAULT_CONFIG)
+      userRef.current = null
+      setUserState(null)
+      setStatus('anonymous')
+      setBootstrapError(null)
+      return
+    }
     const controller = new AbortController()
     void (async () => {
       const [me, cfg] = await Promise.allSettled([authApi.me(controller.signal), configApi.get(controller.signal)])
